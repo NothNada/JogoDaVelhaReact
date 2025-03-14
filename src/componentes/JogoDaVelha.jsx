@@ -3,9 +3,13 @@ import React,{ useState, useEffect } from 'react';
 export default function JogoDaVelha() {
 
     const jogoInicial = [
-        ['','',''],
-        ['','',''],
-        ['','','']
+        ['','','','',''],
+
+        ['', '','','' ,''],
+        ['', '','','' ,''],
+        ['', '','','' ,''],
+
+        ['','','','','']
     ];
 
     const [jogo,setJogo] = useState(jogoInicial);
@@ -13,31 +17,42 @@ export default function JogoDaVelha() {
     const [vitoria,setVitoria] = useState(false);
     const [empate,setEmpate] = useState(false);
 
+    const [Nlinhas,Ncolunas] = [5,5];
+
 
     const tabela = {
-        width: "600px",
-        height: "600px",
-        backgroundColor: "#000",
+        width: "300px",
+        height: "300px",
         display: "flex",
-        flexDirection: "column",
-        cursor:"pointer"
+        flexDirection: "column"
     };
 
     const linha = {
         display: "flex",
         flexDirection: "row",
-        width: "600px",
-        height: "200px"
+        width: "100%",
+        height: "33%"
     };
 
     const casa = {
+        backgroundColor: "#000",
         display:"flex",
         alignItems:"center",
         justifyContent:"center",
-        width:"200px",
-        height:"200px",
-        fontSize:"100px",
-        border:"#fff solid 1px"
+        width:"100%",
+        height:"100%",
+        fontSize:"3rem",
+        border:"#fff solid 1px",
+        cursor:"pointer"
+    }
+
+    const casaEsp = {
+        display:"flex",
+        alignItems:"center",
+        justifyContent:"center",
+        width:"100%",
+        height:"100%",
+        fontSize:"3rem"
     }
 
     const btn = {
@@ -68,45 +83,78 @@ export default function JogoDaVelha() {
     function verificaVitoria(quem){
         /*
 
-        (0,0) (0,1) (0,2)
-        (1,0) (1,1) (1,2)
-        (2,0) (2,1) (2,2)
+        ( 0 )   ( 1)  ( 2 ) ( 3 )   ( 4 )
+         -------------------------------
+        ( 5 ) - ( 6 ) ( 7 ) ( 8 ) - ( 9 )
+        (10 ) - (11 ) (12 ) (13 ) - (14 )
+        (15 ) - (16 ) (17 ) (18 ) - (19 )
+         -------------------------------
+        (20 )   (21 ) (22 ) (23 )   (24 )
 
         */
-        let vitorias = [
-            [ [0,0] , [0,1] , [0,2] ],
-            [ [1,0] , [1,1] , [1,2] ],
-            [ [2,0] , [2,1] , [2,2] ],
-            [ [0,0] , [1,0] , [2,0] ],
-            [ [0,1] , [1,1] , [2,1] ],
-            [ [0,2] , [1,2] , [2,2] ],
-            [ [0,0] , [1,1] , [2,2] ],
-            [ [0,2] , [1,1] , [2,0] ]
-        ]
+       let foi =false;
 
-        let foi = false;
+        for(let l=0;l<Nlinhas;l++){
+            for(let c=0;c<Ncolunas;c++){
+                if (jogo[l][c] && jogo[l][c] === jogo[l][c + 1] && jogo[l][c] === jogo[l][c + 2]) {
+                    foi = true;
+                    setJogador(jogo[i][j]);
+                }
+            }
+        }
 
-        for(const k of vitorias){
-            if(jogo[k[0][0]][k[0][1]]==quem  && jogo[k[1][0]][k[1][1]]==quem && jogo[k[2][0]][k[2][1]]==quem){
-                foi = true;
-                setJogador(quem);
+        for (let j = 0; j < Nlinhas; j++) {
+            for (let i = 0; i <= Ncolunas - 3; i++) {
+                if (jogo[i][j] && jogo[i][j] === jogo[i + 1][j] && jogo[i][j] === jogo[i + 2][j]) {
+                    foi = true;
+                    setJogador(jogo[i][j]);
+                }
+            }
+        }
+
+        for (let i = 0; i <= Nlinhas - 3; i++) {
+            for (let j = 0; j <= Ncolunas - 3; j++) {
+                if (jogo[i][j] && jogo[i][j] === jogo[i + 1][j + 1] && jogo[i][j] === jogo[i + 2][j + 2]) {
+                    foi = true;
+                    setJogador(jogo[i][j]);
+                }
+            }
+        }
+
+        for (let i = 0; i <= Nlinhas - 3; i++) {
+            for (let j = 0; j <= Ncolunas - 3; j++) {
+                if (jogo[i][j] && jogo[i][j] === jogo[i + 1][j + 1] && jogo[i][j] === jogo[i + 2][j + 2]) {
+                    foi = true;
+                    setJogador(jogo[i][j]);
+                }
+            }
+        }
+
+        for (let i = 0; i <= Nlinhas - 3; i++) {
+            for (let j = 2; j < Ncolunas; j++) {
+                if (jogo[i][j] && jogo[i][j] === jogo[i + 1][j - 1] && jogo[i][j] === jogo[i + 2][j - 2]) {
+                    foi = true;
+                    setJogador(jogo[i][j]);
+                }
             }
         }
 
         if(foi){
             setVitoria(true);
+            setEmpate(false);
         }
     }
 
     function verificaEmpate(){
         let casasPreenchida = 0;
-        for(let i=0;i<3;i++){
-            for(let j=0;j<3;j++){
+        for(let i=1;i<4;i++){
+            for(let j=1;j<4;j++){
                 if(jogo[i][j] != ''){
                     casasPreenchida ++;
                 }
             }
         }
+
         if(casasPreenchida == 9){
             setEmpate(true);
             setVitoria(true);
@@ -118,10 +166,10 @@ export default function JogoDaVelha() {
         let foi = false;
         let novoJogo = jogo;
 
-        for (let i=0;i<3;i++) {
+        for (let i=0;i<Nlinhas;i++) {
             let novo = novoJogo[i];
-            for (let j=0;j<3;j++){
-                if(j+(i*3) == id && novo[j] == ''){
+            for (let j=0;j<Ncolunas;j++){
+                if(j+(i*Nlinhas) == id && novo[j] == ''){
                     novo[j] = jogador;
                     foi = true;
                     novoJogo[i] = novo;
@@ -140,37 +188,40 @@ export default function JogoDaVelha() {
         const linhas = jogo.map((e,ii)=>
             <div style={linha}>
                 {
-                    e.map((ee,i) => <div onClick={clique} style={casa} id={i + (ii*3)}> {ee} </div>)
+                    e.map((ee,i) =>{
+                        let id = i + (ii*Nlinhas);
+                        if((id >= 6 && id <= 8) || (id >= 11 && id <= 13) || (id >= 16 && id <= 18)){
+                            return <div onClick={clique} style={casa} id={i + (ii*Nlinhas)}> {ee} </div>;
+                        }else{
+                            return <div onClick={clique} style={casaEsp} id={i + (ii*Nlinhas)}> {ee} </div>;
+                        }
+                        
+                    })
                 }
             </div>
         );
 
+        const direito = (event)=>{
+            event.preventDefault();
+            setJogador(( jogador == 'X' ? 'O' : 'X'));
+        };
+
         return (
-            <>
-                
-                {vitoria ? 
-                (
-                    ( empate ? (
-                    <>
-                        <h1> Empatou </h1>
-                        <button style={btn} onClick={reiniciar}> Começar denovo </button>
-                    </>
-                    ) : (
-                    <>
-                        <h1> O Jogador { jogador } Venceu </h1>
-                        <button style={btn} onClick={reiniciar}> Começar denovo </button>
-                    </>
-                    ))
-                ):
-                (
-                <>
+            <>                
+                {
+                    vitoria ? (
+                        empate ? (
+                                <h1> Empatou </h1>
+                            ) : (
+                                <h1> O Jogador { jogador } Venceu </h1>
+                            )
+                    ):(
                     <h3>Vez do Jogador {jogador}</h3>
-                    <div style={tabela}>
-                        {linhas}
-                    </div>
-                </>
-                )
+                    )
                 }
+                <div style={tabela} onContextMenu={direito}>
+                    {linhas}
+                </div>
             </>
             
         )
