@@ -1,7 +1,33 @@
-# Jogo da Velha feito em React.js + Vite  
+# 🎮 Jogo da Velha com React.js + Vite
 
-> [!NOTE]
-> É necessario instalar o [Node.js](https://nodejs.org/pt/download)
+Um simples e divertido **Jogo da Velha (Tic-Tac-Toe)** feito com **React.js** e **Vite**.
 
-Para jogar o jogo é necessario instalar as dependências `npm install`  
-E para iniciar o jogo é só usar `npm run dev`
+---
+
+## 📦 Pré-requisitos
+
+> 💡 Você precisa ter o [Node.js](https://nodejs.org/pt/download) instalado na sua máquina.
+
+---
+
+## 🚀 Como rodar o projeto
+
+1. Instale as dependências:
+
+```bash
+npm install
+```
+
+2. Inicie o servidor de desenvolvimento:
+
+```bash
+npm run dev
+```
+
+3. Acesse no navegador:
+
+```
+http://localhost:5173
+```
+
+---
